@@ -1,0 +1,74 @@
+body{
+    margin:0;
+    font-size:22px;
+    font-weight: 500;
+    
+    color:white;
+    background-color: rgba(121,160,193,0.9);
+}
+
+header{
+    background-color: rgb(245, 151, 80);
+    color: white;
+    padding-top: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: "Unlock", serif;
+}
+
+*{
+    box-sizing: border-box;
+}
+.container{
+    max-width: 75%;
+    margin:0 auto;
+    font-family: "Exo 2", sans-serif;
+}
+
+footer{
+    
+    background-color: black;
+    color: white;
+    font: 1.2rem;
+    font-weight: 400;
+    padding:5px 0;
+    margin-top:40px;
+    text-align: center;
+    font-family: "Unlock", serif;
+
+}
+
+.menu{
+    background-color:rgb(190, 130, 60);
+    padding:10px 0;
+}
+
+img{
+    width:600px;
+    height: 425px;
+    display: block;
+    margin: 0 auto;
+}
+
+table{
+    border-collapse: collapse;
+    text-align: justify;
+}
+
+th,td{
+    padding:6px;
+    border: 1px solid white;
+}
+
+a{
+    text-decoration: none;
+    color:white;
+    font-family: "Unlock", serif;
+    font-size:500;
+    transition: color 0.5s;
+}
+
+a:hover{
+    color:rgb(140,200,150);
+}
