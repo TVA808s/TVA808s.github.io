@@ -1,11 +1,11 @@
 @import "siteBaziz.css";
 
 @media (min-width: 801px){
+    nav{justify-content: center;}
     section>div{
-        grid-template-columns: repeat(3,1fr);}
-
+    grid-template-columns: repeat(3,1fr); 
     }
-
+}
 @media (max-width: 800px){
     section>div{
         grid-template-columns: repeat(2,1fr);}
@@ -28,6 +28,7 @@
 
 
 section>div{
+    
     display:grid;
     grid-gap: 10px;
 }
@@ -100,7 +101,7 @@ nav{
     display: flex;
     gap:15px;
     flex-wrap: wrap;
-    justify-content: center;
+    
 }
 
 a.active{
