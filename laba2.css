@@ -110,4 +110,43 @@ a.active{
 
 main{flex-grow: 1;}
 
+.makeanorder{text-align: center; margin-top: 60px;}
+
+#id_select1,#id_select2,#id_select3,#name,#email,#telnum,#address,#time,button{
+    background-color: white;
+    color:black;
+    border: 1px solid black;
+    width: 280px;
+    height: 35px;
+    font-size: 16px;
+}
+
+label,fieldset, button{margin-top: 12px; margin-bottom: 5px;}
+
+#comment{border: 1px solid black; width: 280px; font-size: 16px;}
+
+fieldset{border: none;}
+
+
+
+form{display: flex; justify-content: space-around;}
+
+.ordersettings, .orderinfo{ display: flex; flex-direction: column;}
+
+button{
+    display: block;
+    position: relative;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+button:hover {
+    box-shadow: 0 2px;
+    top: 2px;
+}
+
+button:active {
+    box-shadow: none;
+    top: 6px;
+}
 
