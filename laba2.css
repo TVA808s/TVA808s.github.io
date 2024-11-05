@@ -67,6 +67,28 @@ section>div>div>img{
 
 }
 
+.buttons{
+    display:flex;
+    
+}
+section>div>button{
+    border: none;
+    background: none;
+    color: white;
+    font-size: 20px;
+    width: 110px;
+    margin-bottom: 10px;
+    font-family: "Exo 2", sans-serif;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.active{
+    background-color: rgba(190, 130, 60, 0.3);
+    color: rgb(255, 128, 32);
+}
+
+
 img{
     height:250px;
 }
@@ -109,15 +131,11 @@ nav{
     
 }
 
-a.active{
-    color:tomato;
-}
-
 main{flex-grow: 1;}
 
 .makeanorder{text-align: center; margin-top: 60px;}
 
-#id_select1,#id_select2,#id_select3,#name,#email,#telnum,#address,#time,button{
+#id_select1,#id_select2,#id_select3,#name,#email,#telnum,#address,#time,section>div>div>button{
     background-color: white;
     color:black;
     border: 1px solid black;
@@ -126,7 +144,7 @@ main{flex-grow: 1;}
     font-size: 16px;
 }
 
-label,fieldset, button{margin-top: 12px; margin-bottom: 5px;}
+label,fieldset, section>div>div>button{margin-top: 12px; margin-bottom: 5px;}
 
 #comment{border: 1px solid black; width: 280px; font-size: 16px;}
 
@@ -138,23 +156,28 @@ form{display: flex; justify-content: space-around;}
 
 .ordersettings, .orderinfo{ display: flex; flex-direction: column;}
 
-button{
+section>div>div>button{
     display: block;
     position: relative;
     letter-spacing: 1px;
     cursor: pointer;
 }
 
-button:hover {
+section>div>div>button:hover {
     box-shadow: 0 2px;
     top: 2px;
 }
 
-button:active {
+section>div>div>button:active {
     box-shadow: none;
     top: 6px;
 }
 
 #total{
     font-size: 26px;
+}
+
+
+.hidden{
+    display: none;
 }

@@ -58,7 +58,7 @@ footer{
     flex-wrap: wrap;
 }
 
-a{
+.menu > a, footer>div>a{
     text-decoration: none;
     color:white;
     font-family: "Unlock", serif;
@@ -66,10 +66,10 @@ a{
     transition: color 0.5s;
 }
 
-a:hover{
+.menu > a:hover{
     color:rgb(140,200,150);
 }
 
-a.active{
+.menu > a.active{
     color:tomato;
 }

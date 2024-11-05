@@ -3,8 +3,10 @@
 
 let order = {
     chicken : null,
+    burgers : null,
     snacks : null,
-    drinks : null
+    drinks : null,
+    deserts : null
 };
 
 function total() {
@@ -13,11 +15,17 @@ function total() {
     if (order.chicken) {
         total += order.chicken.price;
     };
+    if (order.burgers) {
+        total += order.burgers.price;
+    };
     if (order.snacks) {
         total += order.snacks.price;
     };
     if (order.drinks) {
         total += order.drinks.price;
+    };
+    if (order.deserts) {
+        total += order.deserts.price;
     };
     price.textContent = `${total}₽`;
 }
@@ -26,7 +34,8 @@ function update() {
     const none = document.getElementById("nothing");
     const selectedDishes = document.getElementById("selectedDishes");
     
-    if (order.chicken || order.snacks || order.drinks) {
+    if (order.chicken || order.burgers || order.snacks || 
+        order.drinks || order.deserts) {
         none.style.display = "none";
         selectedDishes.style.display = "flex";
         selectedDishes.style.flexDirection = "column";
@@ -46,6 +55,12 @@ function setOrder(keyword) {
         selectedDish.name + ' ' + selectedDish.price + '₽';
     }
 
+    if (selectedDish.category === "burgers") {
+        order.burgers = selectedDish;
+        document.getElementById("noBurgers").textContent = 
+        selectedDish.name + ' ' + selectedDish.price + '₽';
+    }
+
     if (selectedDish.category === "snacks") {
         order.snacks = selectedDish;
         document.getElementById("noSnacks").textContent =
@@ -55,6 +70,12 @@ function setOrder(keyword) {
     if (selectedDish.category === "drinks") {
         order.drinks = selectedDish;
         document.getElementById("noDrinks").textContent =
+        selectedDish.name + ' ' + selectedDish.price + '₽';
+    }
+
+    if (selectedDish.category === "deserts") {
+        order.deserts = selectedDish;
+        document.getElementById("noDeserts").textContent =
         selectedDish.name + ' ' + selectedDish.price + '₽';
     }
     update();
@@ -72,7 +93,7 @@ function dinamicCards() {
         const dishCard = document.createElement('div');
         dishCard.classList.add('dish-card');
         dishCard.setAttribute('data-dish', dish.keyword);
-
+        dishCard.classList.add(dish.kind);
         dishCard.innerHTML = 
             `<img src='${dish.image}' alt='${dish.name}'>
             <p class='cost'>${dish.price} ₽</p>
@@ -82,10 +103,14 @@ function dinamicCards() {
 
         if (dish.category === 'chicken') {
             dishSections[0].append(dishCard);
-        } else if (dish.category === 'snacks') {
+        } else if (dish.category === 'burgers') {
             dishSections[1].append(dishCard);
-        } else if (dish.category === 'drinks') {
+        } else if (dish.category === 'snacks') {
             dishSections[2].append(dishCard);
+        } else if (dish.category === 'drinks') {
+            dishSections[3].append(dishCard);
+        } else if (dish.category === 'deserts') {
+            dishSections[4].append(dishCard);
         }
        
         dishCard.querySelector('button').onclick = () => 
@@ -100,8 +125,13 @@ document.addEventListener("DOMContentLoaded", function() {
         const chickenFig = document.getElementById('hiddenChicken');
         const snacksFig = document.getElementById('hiddenSnacks');
         const drinksFig = document.getElementById('hiddenDrinks');
+        const desertsFig = document.getElementById('hiddenDeserts');
+        const burgersFig = document.getElementById('hiddenBurgers');
         if (order.chicken) {
             chickenFig.value = order.chicken.keyword;
+        };
+        if (order.burgers) {
+            burgersFig.value = order.burgers.keyword;
         };
         if (order.snacks) {
             snacksFig.value = order.snacks.keyword;
@@ -109,12 +139,55 @@ document.addEventListener("DOMContentLoaded", function() {
         if (order.drinks) {
             drinksFig.value = order.drinks.keyword;
         };
+        if (order.deserts) {
+            desertsFig.value = order.deserts.keyword;
+        };
     };
 
     document.getElementById("reset").onclick = function() {
         order.chicken = null;
+        order.burgers = null;
         order.snacks = null;
         order.drinks = null;
+        order.deserts = null;
         update();
     };
+
+    
+    const buttons = document.querySelectorAll('[data-kind]');
+    buttons.forEach((b) => {
+        b.onclick = function() {
+            //для показа блюд
+            let kind = b.getAttribute("data-kind");
+            let parent = b.parentElement.parentElement;
+            let cards = parent.querySelectorAll("[data-dish]");
+
+            //установление класса active кнопке
+            if (b.classList.contains("active")) {
+                b.classList.remove("active");
+                //при повторном нажатии на кнопку показывает все блюда
+                cards.forEach((card) => {
+                    card.classList.remove("hidden");
+                });
+            } else {
+                let div = b.closest("div");
+                let pos = div.getAttribute("id");
+                buttons.forEach((a) => {
+                    if (a.closest("div").getAttribute("id") === pos) {
+                        a.classList.remove("active");
+                    };
+                });
+                b.classList.add("active");
+
+                //при первичном нажатии на кнопку убирает не нужные блюда
+                cards.forEach((card) => {
+                    if (card.classList.contains(kind)) {
+                        card.classList.remove("hidden");
+                    } else {
+                        card.classList.add("hidden");
+                    };
+                });
+            };
+        };
+    });
 });
