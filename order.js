@@ -1,5 +1,4 @@
 "use strict";
-"massive.js";
 
 let order = {
     chicken : null,
@@ -46,7 +45,7 @@ function update() {
     }
 }
 
-function setOrder(keyword) {
+function setOrder(keyword, mas) {
     const selectedDish = mas.find(dish => dish.keyword === keyword);
     
     if (selectedDish.category === "chicken") {
@@ -81,7 +80,7 @@ function setOrder(keyword) {
     update();
 }
 
-function dinamicCards() {
+function dinamicCards(mas) {
 
     update();
 
@@ -89,37 +88,63 @@ function dinamicCards() {
     
     const dishSections = document.querySelectorAll('.dishes');
     
+    dishSections.forEach(section => {
+        section.innerHTML = '';
+    });
+
     sortedDishes.forEach(dish => {
         const dishCard = document.createElement('div');
         dishCard.classList.add('dish-card');
         dishCard.setAttribute('data-dish', dish.keyword);
-        dishCard.classList.add(dish.kind);
-        dishCard.innerHTML = 
-            `<img src='${dish.image}' alt='${dish.name}'>
-            <p class='cost'>${dish.price} ₽</p>
-            <p class='name'>${dish.name}</p>
-            <p class='gramms'>${dish.count}</p>
-            <button>Добавить</button>`;
+        dishCard.classList.add(dish.kind); //a
 
+        dishCard.innerHTML = `
+            <img src="${dish.image}" alt="${dish.name}">
+            <p class="cost">${dish.price} ₽</p>
+            <p class="name">${dish.name}</p>
+            <p class="gramms">${dish.count}</p>
+            <button>Добавить</button>
+        `;
+
+        // Добавляем карточку в нужную секцию
         if (dish.category === 'chicken') {
-            dishSections[0].append(dishCard);
+            dishSections[0].appendChild(dishCard);
         } else if (dish.category === 'burgers') {
-            dishSections[1].append(dishCard);
+            dishSections[1].appendChild(dishCard);
         } else if (dish.category === 'snacks') {
-            dishSections[2].append(dishCard);
+            dishSections[2].appendChild(dishCard);
         } else if (dish.category === 'drinks') {
-            dishSections[3].append(dishCard);
+            dishSections[3].appendChild(dishCard);
         } else if (dish.category === 'deserts') {
-            dishSections[4].append(dishCard);
+            dishSections[4].appendChild(dishCard);
         }
-       
-        dishCard.querySelector('button').onclick = () => 
-            setOrder(dishCard.getAttribute('data-dish'));
-        
+
+        dishCard.querySelector('button').onclick = () => {
+            setOrder(dish.keyword, mas);
+        };
     });
 }
 
-document.addEventListener("DOMContentLoaded", dinamicCards);
+async function loadDishes() {
+    try {
+        const response = await fetch("http://localhost:3000/api/dishes");
+        if (!response.ok) {
+            throw new Error('Не удалось загрузить данные о блюдах');
+        }
+        const mas = await response.json();
+        console.log(mas);
+        dinamicCards(mas);
+    } catch (error) {
+        console.error('Ошибка при загрузке данных:', error);
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "alert error";
+        errorDiv.innerHTML = `<p>Ошибка при загрузке: ${error.message}</p>`;
+        document.body.appendChild(errorDiv);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadDishes);
+
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("submit").onclick = function() {
         const chickenFig = document.getElementById('hiddenChicken');
@@ -189,5 +214,49 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             };
         };
+    });
+
+    const form = document.querySelector(".form");
+    form.addEventListener("submit", async (event) => {
+        
+        let message = "";
+        if (document.getElementById("nothing").style.display === "block") {
+            event.preventDefault();
+            message = "<p>Nothing is on the list</p>";
+        } else if (((order.bugers != null && order.chicken != null && 
+        order.snacks != null) || (order.burgers != null && 
+        order.chicken != null) || (order.burgers != null &&
+        order.snacks != null) || (order.chicken != null &&
+        order.snacks != null) || order.chicken != null) && 
+        order.drinks == null) { 
+            event.preventDefault();
+            message = "<p>Chose a drink</p>";
+        } else if (order.burgers != null && order.chicken == null && 
+        order.snacks == null) {
+            event.preventDefault();
+            message = "<p>Chose some tenders or a snack</p>";
+        } else if (order.snacks != null && order.burgers == null && 
+        order.chicken == null) {
+            event.preventDefault();
+            message = "<p>Chose some tenders or a burger</p>";
+        } else if ((order.drinks != null || order.deserts != null) 
+        && order.chicken == null) {
+            event.preventDefault();
+            message = "<p>Chose some tenders</p>";
+        } else { 
+            form.submit();
+        };
+        
+        const div = document.createElement("div");
+        div.className = "alert";
+        div.innerHTML = message;
+
+        const button = document.createElement("button");
+        button.className = "okey";
+        button.textContent = "Okey👌";
+        button.addEventListener('click', () => div.remove());
+
+        div.appendChild(button);
+        document.body.appendChild(div);
     });
 });
